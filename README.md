@@ -1,6 +1,6 @@
 # Varadise Web Developer Exercise
 
-## Basic requirements ( 16/08/21 )
+## Basic requirements ( 16/08/21 ) Revised ( 21/07/22 )
 
 ### Frontend:
 
@@ -21,8 +21,6 @@ Given the visualization requirement and data structure, draft an API document to
 
 - Use Javascript libraries such as Vue.js/React to create frontend of the web app 
 
-- Use Python to implement the backend of the application
-
 - Fetch requested data via API 
 
 - Create visualization of the given data
@@ -34,9 +32,9 @@ Given the visualization requirement and data structure, draft an API document to
 
 ## Backend requirements
 
-- Use `SQLite` as datasource to fetch data 
+- Use `SQLite` or familiar DB as datasource to fetch data 
 
-- Implement API using Python and `Flask` for frontend's need
+- Implement API using Python/Golang/Node for frontend's need
 
 ### Authentication 
 
@@ -48,7 +46,7 @@ Given the visualization requirement and data structure, draft an API document to
 
 - Create an API to get average EUI (**round to 3 decimals**) ( `"metrics"."metric"` / `"buildings_gfa"."PropertyUseTypeGFA"` ) grouped by `"PrimaryPropertyType"` in avaerage
 
-- Use ORM (with `SQLalchemy` library) to query the table of following SQL:
+- Query the table of following SQL or equivalent:
 
 ``` sql
 SELECT 
@@ -109,7 +107,7 @@ GROUP BY
 
 -  Loading indicator when fetching data 
 
-- Layout, style and interactive design are open to interpretation
+-  Layout, style and interactive design are open to interpretation
 
 
 ###  Data Visualization
@@ -121,15 +119,17 @@ GROUP BY
 - The representation of the data is open to interpretation in an informative and user-friendly manner.
 
 
-###  Dockerize Your Job
+###  Dockerize Your Job (Optional)
 - Please include your dockerfile with your source so we can build the docker image directly from the git folder
 - Make a script for building your docker
 - Mkae a script for running your docker in a linux environment
 - Upload your docker image to public image repo and provide the link
+- (Or) Deploy to any k8s which is accessible and submit your yaml files. 
 
 ### Example layout
 
 [Excalidraw](https://excalidraw.com/#json=4852274673221632,a1urShHV547sm_foOMNpKg)
 
 ### Submission
-- Fork a branch for your works
+- Fork to your account for your works and share with our review commitee (frederic_var, KenKam_Varadise, dollkwong, michael.tse1, wickeswong, vinsonwong)
+
