@@ -1,6 +1,6 @@
 # Varadise Web Developer Exercise
 
-## Basic requirements ( 16/08/21 ) Revised ( 21/07/22 )
+## Basic requirements ( 16/08/21 ) Revised ( 06/02/23 )
 
 ### Frontend:
 
@@ -9,17 +9,17 @@ package.json should list all the libraries (especially those for data visualizat
 several component files (with specific property or method definitions) define the layout/structure/design of pages (how would you divide the components of a webpage)
 middleware and helper functions that facilitate communication with backend (eg API caller, date formatter..)
 Under above project structure, implement layout of the overview page
-
+by React
 
 ### Backend:
 
 Given the visualization requirement and data structure, draft an API document to instruct frontend on the request/response spec
+by Golang
 
 ---
 
 ## Bonus requirements
 
-- Use Javascript libraries such as Vue.js/React to create frontend of the web app 
 
 - Fetch requested data via API 
 
@@ -34,7 +34,7 @@ Given the visualization requirement and data structure, draft an API document to
 
 - Use `SQLite` or familiar DB as datasource to fetch data 
 
-- Implement API using Python/Golang/Node for frontend's need
+- Implement API using Golang for frontend's requests
 
 ### Authentication 
 
