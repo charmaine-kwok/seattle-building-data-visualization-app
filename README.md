@@ -131,5 +131,5 @@ GROUP BY
 [Excalidraw](https://excalidraw.com/#json=4852274673221632,a1urShHV547sm_foOMNpKg)
 
 ### Submission
-- Fork to your account for your works and share with our review commitee (frederic_var, KenKam_Varadise, dollkwong, michael.tse1, wickeswong, vinsonwong)
+- Fork to your account for your works and share with our review commitee with a role of "reporter" (listed in the invitation letter)
 
