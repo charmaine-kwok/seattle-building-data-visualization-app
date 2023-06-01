@@ -1,6 +1,9 @@
 # Varadise Web Developer Exercise
 
-## Basic requirements ( 16/08/21 ) Revised ( 06/02/23 )
+## Basic requirements ( 16/08/21 ) Revised ( 01/06/23 )
+
+### Deliverables:
+Built docker images which can be deployed to third party environment including both frontend and backend. Source code should be commit in the forked gitlab with access granted to Varadise accessors.
 
 ### Frontend:
 
@@ -14,7 +17,7 @@ by React
 ### Backend:
 
 Given the visualization requirement and data structure, draft an API document to instruct frontend on the request/response spec
-by Golang
+by Golang/Python/Node
 
 ---
 
