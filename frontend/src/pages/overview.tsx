@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
+import fetchBuildingDetails from "@/functions/api/fetchBuildingDetails";
+import fetchBuildingsList from "@/functions/api/fetchBuildingsList";
+import SignOutButton from "@/components/SignOutButton";
+import handleLogout from "@/functions/handleLogout";
 import Loading from "@/components/Loading";
-import { setTimeout } from "timers";
 import Map from "@/components/Map";
 
-interface BuildingsProps {
+export interface BuildingsProps {
   PropertyName: string;
   PrimaryPropertyType: string;
   Address: string;
@@ -18,29 +21,9 @@ interface BuildingsProps {
   Longitude: number;
 }
 
-interface BuildingsResponse {
-  buildings: string[];
-  totalItem: number;
-  totalPages: number;
-}
-
-interface BuildingDetailsResponse {
+export interface BuildingDetailsResponse {
   Building: BuildingsProps;
 }
-
-export const handleLogout = (router: NextRouter) => {
-  router.push("/login");
-  fetch(`http://localhost:8081/logout`, {
-    credentials: "include",
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch buildings data: ${response.status} ${response.statusText}`
-      );
-    }
-    return response;
-  });
-};
 
 export default function Overview() {
   const [buildingsList, setBuildingsList] = useState<string[]>([]);
@@ -48,10 +31,8 @@ export default function Overview() {
     null
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [totalItem, setTotalItem] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loadedDetails, setIsLoadedDetails] = useState<boolean>(false);
+  const [isLoadingList, setIsLoadingList] = useState<boolean>(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState<boolean>(false);
   const [selectedBuildingIndex, setSelectedBuildingIndex] = useState(-1);
 
@@ -61,65 +42,13 @@ export default function Overview() {
     handleLogout(router);
   };
 
-  const fetchBuildings = () => {
-    setIsLoading(true);
-    setTimeout(
-      () =>
-        fetch(`http://localhost:8081/overview?page=${currentPage}`, {
-          credentials: "include",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(
-                `Failed to fetch buildings data: ${response.status} ${response.statusText}`
-              );
-            }
-            return response.json() as Promise<BuildingsResponse>;
-          })
-          .then((data) => {
-            setIsLoading(false);
-            setBuildingsList(data.buildings);
-            // setTotalItem(data.totalItem);
-            setTotalPages(data.totalPages);
-          })
-          .catch((error) => {
-            console.error(error);
-            window.alert("Failed to fetch buildings data");
-          }),
-      2000
-    );
-  };
-
-  const fetchBuildingDetails = (name: string) => {
-    setIsLoadingDetails(true);
-    setTimeout(
-      () =>
-        fetch(`http://localhost:8081/details?name=${name}`, {
-          credentials: "include",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(
-                `Failed to fetch building details: ${response.status} ${response.statusText}`
-              );
-            }
-            return response.json() as Promise<BuildingDetailsResponse>;
-          })
-          .then((data) => {
-            setIsLoadingDetails(false);
-            setBuildingDetails(data.Building);
-            setIsLoadedDetails(true);
-          })
-          .catch((error) => {
-            console.error(error);
-            window.alert("Failed to fetch building details");
-          }),
-      2000
-    );
-  };
-
   useEffect(() => {
-    fetchBuildings();
+    fetchBuildingsList(
+      currentPage,
+      setIsLoadingList,
+      setBuildingsList,
+      setTotalPages
+    );
   }, [currentPage]);
 
   const handleBuildingClick = (index: number) => {
@@ -187,15 +116,20 @@ export default function Overview() {
         <div className="flex flex-col items-center justify-center space-y-4 w-[50%] h-[100%]">
           <p>Select one to view details</p>
           <div className="h-[80%] w-full ">
-            {isLoading && <Loading />}
-            {!isLoading && (
+            {isLoadingList && <Loading />}
+            {!isLoadingList && (
               <ul className="space-y-2 flex-col w-[100%]">
                 {buildingsList.map((building, index) => (
                   <li
                     onClick={() => {
                       handleBuildingClick(index);
-                      console.log(building);
-                      fetchBuildingDetails(building);
+                      fetchBuildingDetails(
+                        building,
+                        setIsLoadingDetails,
+                        setBuildingDetails as React.Dispatch<
+                          React.SetStateAction<BuildingsProps>
+                        >
+                      );
                     }}
                     key={index}
                     className={`hover:cursor-pointer py-2 px-2 border border-w-[1px] border-black ${
@@ -233,14 +167,7 @@ export default function Overview() {
           </div>
         </div>
       </div>
-
-      {/* Add logout button */}
-      <button
-        className="fixed bottom-10 left-10 bg-red-500 border border-black px-4 py-2"
-        onClick={logoutHandler}
-      >
-        SIGN OUT
-      </button>
+      <SignOutButton logoutHandler={logoutHandler} />
     </div>
   );
 }
