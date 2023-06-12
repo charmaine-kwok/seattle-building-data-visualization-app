@@ -1,15 +1,11 @@
 import { useRef } from "react";
 import { useRouter } from "next/router";
-import jwtAtom from "@/atoms/jwtAtom";
-import { useSetAtom } from "jotai";
 
 const Login = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
-
-  const setJwtAtom = useSetAtom(jwtAtom);
 
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -38,7 +34,6 @@ const Login = () => {
         try {
           const token: string = JSON.parse(data).token;
           console.log(token);
-          setJwtAtom(token);
         } catch (error) {
           console.log(error);
         }
@@ -55,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex bg-gray-bg1">
+    <div className="h-screen flex">
       <div className="w-full max-w-2xl m-auto bg-white rounded-lg border py-10 px-16">
         <h1 className="text-2xl font-medium text-primary mt-4 mb-12 text-center">
           SEATTLE BUILDING DATA VISUALIZATION
