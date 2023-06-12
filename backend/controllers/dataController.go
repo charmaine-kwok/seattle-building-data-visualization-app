@@ -78,3 +78,77 @@ func GetBuildingsDetails(c *gin.Context) {
 		"Building": building,
 	})
 }
+
+// TODO:
+func GetBuilding(c *gin.Context) {
+	// Get the "PropertyName" parameter from the query string
+	propertyName := c.Query("name")
+
+	// Fetch the data from the database
+	var building models.Buildings
+
+	result := initializers.DB.Model(&models.Buildings{}).
+		Select("*").
+		Where("Propertyname = ?", propertyName).
+		Find(&building)
+
+	// Handle errors while fetching data from the database
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	// Return the fetched data as a JSON response
+	c.JSON(http.StatusOK, gin.H{
+		"Building": building,
+	})
+}
+
+func GetAverageEUI(c *gin.Context) {
+
+	// Execute the SQL query to calculate the EUI for each building
+	rows, err := initializers.DB.Raw(`
+		SELECT
+			t.PrimaryPropertyType AS type,
+			AVG(m.value / gfa.PropertyUseTypeGFA) AS average_eui
+		FROM buildings t
+		LEFT JOIN (
+			SELECT OSEBuildingID AS id, SUM(PropertyUseTypeGFA) AS PropertyUseTypeGFA
+			FROM buildings_gfa
+			GROUP BY OSEBuildingID
+		) gfa ON t.OSEBuildingID = gfa.id
+		LEFT JOIN metrics m ON t.OSEBuildingID = m.OSEBuildingID
+		WHERE m.metric = 'Electricity'
+		GROUP BY t.PrimaryPropertyType;
+		`).Rows()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer rows.Close()
+
+	// Iterate over the query results and build a map of average EUIs by property type
+	averageEUIs := make(map[string]float64)
+	for rows.Next() {
+		var propertyType string
+		var averageEUI float64
+		err := rows.Scan(&propertyType, &averageEUI)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		averageEUIs[propertyType] = averageEUI
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Round the average EUIs to 3 decimals
+	for propertyType, averageEUI := range averageEUIs {
+		averageEUIs[propertyType] = math.Round(averageEUI*1000) / 1000
+	}
+
+	// Return the map of average EUIs to the client
+	c.JSON(http.StatusOK, averageEUIs)
+}
