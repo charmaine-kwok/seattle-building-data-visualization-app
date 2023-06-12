@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 import Loading from "@/components/Loading";
@@ -28,6 +28,20 @@ interface BuildingDetailsResponse {
   Building: BuildingsProps;
 }
 
+export const handleLogout = (router: NextRouter) => {
+  router.push("/login");
+  fetch(`http://localhost:8081/logout`, {
+    credentials: "include",
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch buildings data: ${response.status} ${response.statusText}`
+      );
+    }
+    return response;
+  });
+};
+
 export default function Overview() {
   const [buildingsList, setBuildingsList] = useState<string[]>([]);
   const [buildingDetails, setBuildingDetails] = useState<BuildingsProps | null>(
@@ -43,18 +57,8 @@ export default function Overview() {
 
   const router = useRouter();
 
-  const handleLogout = () => {
-    router.push("/login");
-    fetch(`http://localhost:8081/logout`, {
-      credentials: "include",
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch buildings data: ${response.status} ${response.statusText}`
-        );
-      }
-      return response;
-    });
+  const logoutHandler = () => {
+    handleLogout(router);
   };
 
   const fetchBuildings = () => {
@@ -74,7 +78,6 @@ export default function Overview() {
           })
           .then((data) => {
             setIsLoading(false);
-
             setBuildingsList(data.buildings);
             // setTotalItem(data.totalItem);
             setTotalPages(data.totalPages);
@@ -234,7 +237,7 @@ export default function Overview() {
       {/* Add logout button */}
       <button
         className="fixed bottom-10 left-10 bg-red-500 border border-black px-4 py-2"
-        onClick={handleLogout}
+        onClick={logoutHandler}
       >
         SIGN OUT
       </button>
