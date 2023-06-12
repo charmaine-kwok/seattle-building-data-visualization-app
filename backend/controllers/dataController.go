@@ -3,6 +3,7 @@ package controllers
 import (
 	"api/models"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 
@@ -20,7 +21,7 @@ func GetBuildings(c *gin.Context) {
 	}
 
 	// Calculate the offset
-	const perPage = 20
+	const perPage = 10
 	offset := (page - 1) * perPage
 
 	// Connect to the database
@@ -46,9 +47,13 @@ func GetBuildings(c *gin.Context) {
 	var totalItem int64
 	db.Model(&models.Buildings{}).Count(&totalItem)
 
+	// var totalPage int64
+	totalPages := int(math.Ceil(float64(totalItem) / float64(perPage)))
+
 	// Return the fetched data as a JSON response
 	c.JSON(http.StatusOK, gin.H{
-		"buildings": buildings,
-		"totalItem": totalItem,
+		"buildings":  buildings,
+		"totalItem":  totalItem,
+		"totalPages": totalPages,
 	})
 }
