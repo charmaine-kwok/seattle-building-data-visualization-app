@@ -24,6 +24,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Error unmarshaling JSON: %v", err)
 	}
+
 	// Get the email and password off req body
 	var body models.User
 
@@ -53,7 +54,6 @@ func Login(c *gin.Context) {
 	}
 
 	// Generate a jwt token
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.Username,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
@@ -69,6 +69,7 @@ func Login(c *gin.Context) {
 		})
 	}
 
+	// Set cookie
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
 
@@ -76,4 +77,9 @@ func Login(c *gin.Context) {
 		"token": tokenString,
 	})
 
+}
+
+func Logout(c *gin.Context) {
+	// Clear Authorization cookie
+	c.SetCookie("Authorization", "", 0, "", "", false, true)
 }
