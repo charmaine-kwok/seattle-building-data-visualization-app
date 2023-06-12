@@ -43,6 +43,7 @@ func main() {
 	r.POST("/login", controllers.Login)
 	r.GET("/overview", middleware.RequireAuth, controllers.GetBuildings)
 	r.GET("/details", middleware.RequireAuth, controllers.GetBuildingsDetails)
+	r.GET("/average", controllers.GetAverageEUI)
 
 	// Logout and clear cookie
 	r.GET("/logout", controllers.Logout)
