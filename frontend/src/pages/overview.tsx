@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
+import Header from "@/components/header";
 import fetchBuildingDetails from "@/functions/api/fetchBuildingDetails";
 import fetchBuildingsList from "@/functions/api/fetchBuildingsList";
 import SignOutButton from "@/components/SignOutButton";
@@ -57,29 +58,12 @@ export default function Overview() {
 
   return (
     <div className="flex flex-col items-center py-4 h-screen">
-      <div className="flex flex-row w-full items-center justify-center">
-        <h1 className="text-3xl font-bold my-4">
-          SEATTLE BUILDING DATA VISUALIZATION
-        </h1>
-        <div className="flex w-[20%] space-x-3 mx-4">
-          <button
-            className={
-              "w-24 border boder-w-1 border-black bg-blue-300 box-border"
-            }
-          >
-            overview
-          </button>
-          <button
-            className={"w-24 border boder-w-1 border-black box-border"}
-            onClick={() => {
-              router.push("/chart");
-            }}
-          >
-            charts
-          </button>
-        </div>
-      </div>
-
+      <Header
+        page="overview"
+        onClickChart={() => {
+          router.push("/chart");
+        }}
+      />
       <div className="flex flex-row w-full px-8 h-full">
         <div className="flex items-center justify-center w-[50%] h-[100%] ">
           {isLoadingDetails && <Loading />}
@@ -95,9 +79,8 @@ export default function Overview() {
                   {buildingDetails.Address} {"\n"} {buildingDetails.City}
                   {"\n"}# of floor: {buildingDetails.NumberofFloors}
                   {"\n"}District: {buildingDetails.CouncilDistrictCode}
-                  {"\n"}Built in {buildingDetails.YearBuilt}{" "}
-                  {buildingDetails.Latitude}
-                </p>{" "}
+                  {"\n"}Built in {buildingDetails.YearBuilt}
+                </p>
               </div>
               <div className="flex flex-row justify-center">
                 <Map
