@@ -6,6 +6,11 @@ import SignOutButton from "@/components/SignOutButton";
 import Loading from "@/components/Loading";
 import BarChart from "@/components/BarChart";
 import handleLogout from "@/functions/handleLogout";
+import fetchAverageData from "@/functions/api/fetchAverageData";
+
+export interface IAverageData {
+  [key: string]: number;
+}
 
 export default function Chart() {
   const router = useRouter();
@@ -15,33 +20,12 @@ export default function Chart() {
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [averageData, setAverageData] = useState(null);
-
-  const fetchAverageData = () => {
-    setIsLoading(true);
-
-    fetch("http://localhost:8081/average", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch data: ${response.status} ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setIsLoading(false);
-        setAverageData(data);
-      })
-      .catch((error) => {
-        window.alert("Failed to fetch buildings data. Please login again.");
-      });
-  };
+  const [averageData, setAverageData] = useState<IAverageData>(
+    {} as IAverageData
+  );
 
   useEffect(() => {
-    fetchAverageData();
+    fetchAverageData(setIsLoading, setAverageData);
   }, []);
 
   return (
@@ -54,7 +38,7 @@ export default function Chart() {
       />
       <div className="h-[500px] w-[80%]">
         {isLoading && <Loading />}
-        {averageData != null && <BarChart data={averageData} />}
+        {!isLoading && <BarChart data={averageData} />}
       </div>
       <SignOutButton logoutHandler={logoutHandler} />
     </div>

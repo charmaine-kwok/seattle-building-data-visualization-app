@@ -13,7 +13,7 @@ const Login = () => {
     const password = passwordRef.current?.value || "";
     loginHandler(username, password);
   };
-  console.log("Login Page");
+
   const loginHandler = (username: string, password: string) => {
     console.log("pressed");
     fetch("http://localhost:8081/login", {
