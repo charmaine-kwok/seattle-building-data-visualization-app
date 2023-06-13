@@ -40,7 +40,7 @@ export default function Overview() {
   const router = useRouter();
 
   const logoutHandler = () => {
-    handleLogout(router);
+    handleLogout(() => router.push("/login"));
   };
 
   useEffect(() => {

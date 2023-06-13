@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { useRouter } from "next/router";
 
+import loginHandler from "@/functions/api/loginHandler";
+
 const Login = () => {
   // create refs for the input fields
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -14,40 +16,7 @@ const Login = () => {
     e.preventDefault();
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
-    loginHandler({ username, password });
-  };
-
-  // send form data to API endpoint for authentication
-  const loginHandler = async ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    try {
-      const response = await fetch("http://localhost:8081/login", {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-      const data = await response.json();
-      const token: string = data.token;
-      console.log(token);
-      // redirect to Overview page on successful login
-      router.push("/overview");
-    } catch (error) {
-      console.error(error);
-      window.alert(
-        "Login failed. Please check your username and password and try again."
-      );
-    }
+    loginHandler(username, password, () => router.push("/overview"));
   };
 
   // render the login form

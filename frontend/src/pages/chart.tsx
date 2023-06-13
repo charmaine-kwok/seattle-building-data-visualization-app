@@ -16,7 +16,7 @@ export default function Chart() {
   const router = useRouter();
 
   const logoutHandler = () => {
-    handleLogout(router);
+    handleLogout(() => router.push("/login"));
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);

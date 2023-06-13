@@ -6,7 +6,7 @@ interface BuildingsResponse {
   totalPages: number;
 }
 
-const fetchBuildingsList = (
+const fetchBuildingsList = async (
   currentPage: number,
   setIsLoadingList: React.Dispatch<React.SetStateAction<boolean>>,
   setBuildingsList: React.Dispatch<React.SetStateAction<string[]>>,
@@ -14,25 +14,28 @@ const fetchBuildingsList = (
 ) => {
   setIsLoadingList(true);
 
-  fetch(`http://localhost:8081/overview?page=${currentPage}`, {
-    credentials: "include",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch buildings data: ${response.status} ${response.statusText}`
-        );
+  try {
+    const response = await fetch(
+      `http://localhost:8081/overview?page=${currentPage}`,
+      {
+        credentials: "include",
       }
-      return response.json() as Promise<BuildingsResponse>;
-    })
-    .then((data) => {
-      setIsLoadingList(false);
-      setBuildingsList(data.buildings);
-      setTotalPages(data.totalPages);
-    })
-    .catch((error) => {
-      window.alert("Failed to fetch buildings data. Please login again.");
-    });
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch buildings data: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = (await response.json()) as BuildingsResponse;
+
+    setIsLoadingList(false);
+    setBuildingsList(data.buildings);
+    setTotalPages(data.totalPages);
+  } catch (error) {
+    window.alert("Failed to fetch buildings data. Please login again.");
+  }
 };
 
 export default fetchBuildingsList;
