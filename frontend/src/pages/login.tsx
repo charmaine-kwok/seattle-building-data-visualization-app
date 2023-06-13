@@ -2,53 +2,55 @@ import { useRef } from "react";
 import { useRouter } from "next/router";
 
 const Login = () => {
+  // create refs for the input fields
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  // get the router object
   const router = useRouter();
 
+  // handle form submission
   const handleClick = (e: any) => {
     e.preventDefault();
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
-    loginHandler(username, password);
+    loginHandler({ username, password });
   };
 
-  const loginHandler = (username: string, password: string) => {
-    console.log("pressed");
-    fetch("http://localhost:8081/login", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-        return response.text();
-      })
-      .then((data) => {
-        try {
-          const token: string = JSON.parse(data).token;
-          console.log(token);
-        } catch (error) {
-          console.log(error);
-        }
-        // redirect to Overview Page
-
-        router.push("/overview");
-      })
-      .catch((error) => {
-        console.error(error);
-        window.alert(
-          "Login failed. Please check your username and password and try again."
-        );
+  // send form data to API endpoint for authentication
+  const loginHandler = async ({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => {
+    try {
+      const response = await fetch("http://localhost:8081/login", {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
       });
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+      const data = await response.json();
+      const token: string = data.token;
+      console.log(token);
+      // redirect to Overview page on successful login
+      router.push("/overview");
+    } catch (error) {
+      console.error(error);
+      window.alert(
+        "Login failed. Please check your username and password and try again."
+      );
+    }
   };
 
+  // render the login form
   return (
     <div className="h-screen flex">
       <div className="w-full max-w-2xl m-auto bg-white rounded-lg border py-10 px-16">
