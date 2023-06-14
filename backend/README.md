@@ -29,12 +29,12 @@ http POST http://localhost:8081/login username=admin password=password
 # get a list of buildings name
 http GET http://localhost:8081/api/buildings/overview?page=$page Authorization:"$JWT"
 
-# get buildings details
+# get building details
 http GET http://localhost:8081/api/buildings/details?name=$name Authorization:"$JWT"
 
 # get get average EUI by Primary Property Type
 http GET http://localhost:8081/api/buildings/average Authorization:"$JWT"
 
-# get the list of building informations
+# get the list of building informations, accepts parameters primarypropertytype, yearbuilt & councildistrictcode
 http GET http://localhost:8081/api/buildings?primarypropertytype=$primarypropertytype&yearbuilt=$yearbuilt&councildistrictcode=$councildistrictcode Authorization:"$JWT"
 ```
