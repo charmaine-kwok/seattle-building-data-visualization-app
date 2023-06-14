@@ -14,7 +14,7 @@ import (
 )
 
 func Login(c *gin.Context) {
-	fileContents, err := os.ReadFile("./credentials/users.json")
+	fileContents, err := os.ReadFile("./data/users.json")
 	if err != nil {
 		log.Fatalf("Error reading file: %v", err)
 	}
@@ -36,7 +36,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Look up requested user
-	if body.Username != "admin" {
+	if body.Username != user.Username {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid username or password",
 		})
@@ -79,6 +79,7 @@ func Login(c *gin.Context) {
 
 }
 
+// Logout and clear cookie
 func Logout(c *gin.Context) {
 	// Clear Authorization cookie
 	c.SetCookie("Authorization", "", 0, "", "", false, true)
