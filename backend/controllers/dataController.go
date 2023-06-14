@@ -20,6 +20,7 @@ func CloseDB() {
 	sqlDB.Close()
 }
 
+// API to get the list of building property name
 func GetBuildings(c *gin.Context) {
 	// Get the "page" parameter from the query string, with a default value of 1
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -55,8 +56,9 @@ func GetBuildings(c *gin.Context) {
 	})
 }
 
-func GetBuildingsDetails(c *gin.Context) {
-	// Get the "PropertyName" parameter from the query string
+// API to get the building details
+func GetBuildingDetails(c *gin.Context) {
+	// Get the "name" parameter from the query string
 	propertyName := c.Query("name")
 
 	// Fetch the data from the database
@@ -79,18 +81,36 @@ func GetBuildingsDetails(c *gin.Context) {
 	})
 }
 
-// TODO:
-func GetBuilding(c *gin.Context) {
-	// Get the "PropertyName" parameter from the query string
-	propertyName := c.Query("name")
+// API to get the list of building informations
+func GetBuildingsByParams(c *gin.Context) {
+	// Get the "primarypropertytype" parameter from the query string
+	primaryPropertyType := c.Query("primarypropertytype")
+
+	// Get the "yearbuilt" parameter from the query string
+	yearBuilt := c.Query("yearbuilt")
+
+	// Get the "councildistrictcode" parameter from the query string
+	councilDistrictCode := c.Query("councildistrictcode")
 
 	// Fetch the data from the database
-	var building models.Buildings
+	var buildings []models.Buildings
 
-	result := initializers.DB.Model(&models.Buildings{}).
-		Select("*").
-		Where("Propertyname = ?", propertyName).
-		Find(&building)
+	dbQuery := initializers.DB.Model(&models.Buildings{}).
+		Select("Propertyname", "Primarypropertytype", "Address", "City", "Numberoffloors", "Councildistrictcode", "Yearbuilt", "Latitude", "Longitude")
+
+	if primaryPropertyType != "" {
+		dbQuery = dbQuery.Where("Primarypropertytype = ?", primaryPropertyType)
+	}
+
+	if yearBuilt != "" {
+		dbQuery = dbQuery.Where("Yearbuilt = ?", yearBuilt)
+	}
+
+	if councilDistrictCode != "" {
+		dbQuery = dbQuery.Where("Councildistrictcode = ?", councilDistrictCode)
+	}
+
+	result := dbQuery.Find(&buildings)
 
 	// Handle errors while fetching data from the database
 	if result.Error != nil {
@@ -100,10 +120,11 @@ func GetBuilding(c *gin.Context) {
 
 	// Return the fetched data as a JSON response
 	c.JSON(http.StatusOK, gin.H{
-		"Building": building,
+		"Buildings": buildings,
 	})
 }
 
+// API to get average EUI (round to 3 decimals)
 func GetAverageEUI(c *gin.Context) {
 
 	// Execute the SQL query to calculate the EUI for each building
