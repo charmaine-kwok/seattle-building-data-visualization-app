@@ -16,7 +16,7 @@ const fetchBuildingsList = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8081/overview?page=${currentPage}`,
+      `http://localhost:8081/api/buildings/overview?page=${currentPage}`,
       {
         credentials: "include",
       }

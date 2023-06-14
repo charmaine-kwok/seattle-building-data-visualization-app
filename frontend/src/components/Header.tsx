@@ -1,5 +1,3 @@
-import { NextRouter } from "next/router";
-
 type HeaderProps = {
   page: string;
   onClickOverview?: () => void;

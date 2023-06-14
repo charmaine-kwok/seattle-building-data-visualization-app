@@ -9,9 +9,12 @@ const fetchBuildingDetails = async (
   setIsLoadingDetails(true);
 
   try {
-    const response = await fetch(`http://localhost:8081/details?name=${name}`, {
-      credentials: "include",
-    });
+    const response = await fetch(
+      `http://localhost:8081/api/buildings/details?name=${name}`,
+      {
+        credentials: "include",
+      }
+    );
 
     if (!response.ok) {
       throw new Error(

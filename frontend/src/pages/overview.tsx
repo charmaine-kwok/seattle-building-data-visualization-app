@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import fetchBuildingDetails from "@/functions/api/fetchBuildingDetails";
 import fetchBuildingsList from "@/functions/api/fetchBuildingsList";
 import SignOutButton from "@/components/SignOutButton";

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import SignOutButton from "@/components/SignOutButton";
 import Loading from "@/components/Loading";
 import BarChart from "@/components/BarChart";
