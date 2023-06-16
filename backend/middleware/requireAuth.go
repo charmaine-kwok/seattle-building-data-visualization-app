@@ -54,7 +54,7 @@ func RequireAuth(c *gin.Context) {
 		// Attach to req
 		c.Set("user", claims["sub"])
 
-		// COntinue
+		// Continue
 		c.Next()
 
 	} else {
