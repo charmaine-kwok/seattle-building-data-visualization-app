@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import Header from "@/components/Header";
-import SignOutButton from "@/components/SignOutButton";
-import Loading from "@/components/Loading";
-import BarChart from "@/components/BarChart";
-import handleLogout from "@/functions/handleLogout";
-import fetchAverageData from "@/functions/api/fetchAverageData";
+import Header from '@/components/Header';
+import SignOutButton from '@/components/SignOutButton';
+import Loading from '@/components/Loading';
+import BarChart from '@/components/BarChart';
+import handleLogout from '@/functions/handleLogout';
+import fetchAverageData from '@/functions/api/fetchAverageData';
 
 export interface IAverageData {
   [key: string]: number;
@@ -16,7 +16,7 @@ export default function Chart() {
   const router = useRouter();
 
   const logoutHandler = () => {
-    handleLogout(() => router.push("/login"));
+    handleLogout(() => router.push('/login'));
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export default function Chart() {
 
   useEffect(() => {
     fetchAverageData(setIsLoading, setAverageData, setIsAuth, () =>
-      router.push("/unauthorized")
+      router.push('/unauthorized')
     );
   }, []);
 
@@ -37,10 +37,10 @@ export default function Chart() {
         <Header
           page="charts"
           onClickOverview={() => {
-            router.push("/overview");
+            router.push('/overview');
           }}
         />
-        <div className="h-[500px] w-[80%]">
+        <div className="h-[80%] w-[80%] flex items-center justify-center">
           {isLoading && <Loading />}
           {!isLoading && <BarChart data={averageData} />}
         </div>

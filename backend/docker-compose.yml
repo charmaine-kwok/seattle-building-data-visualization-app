@@ -7,7 +7,5 @@ services:
     image: mainekwok97/go-api
     ports:
       - "8081:8081"
-    # env_file:
-    #   - ../context/.env
     volumes:
       - "./data:/app/data"
