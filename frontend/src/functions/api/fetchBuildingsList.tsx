@@ -10,7 +10,9 @@ const fetchBuildingsList = async (
   currentPage: number,
   setIsLoadingList: React.Dispatch<React.SetStateAction<boolean>>,
   setBuildingsList: React.Dispatch<React.SetStateAction<string[]>>,
-  setTotalPages: React.Dispatch<React.SetStateAction<number>>
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>,
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>,
+  toUnauthorized: () => void
 ) => {
   setIsLoadingList(true);
 
@@ -23,18 +25,20 @@ const fetchBuildingsList = async (
     );
 
     if (!response.ok) {
+      toUnauthorized();
       throw new Error(
-        `Failed to fetch buildings data: ${response.status} ${response.statusText}`
+        `Failed to fetch building details: ${response.status} ${response.statusText}`
       );
     }
 
+    setIsAuth(true);
     const data = (await response.json()) as BuildingsResponse;
-
     setIsLoadingList(false);
     setBuildingsList(data.buildings);
     setTotalPages(data.totalPages);
   } catch (error) {
-    window.alert("Failed to fetch buildings data. Please login again.");
+    // window.alert("Failed to fetch building details. Please login again.");
+    console.log(error);
   }
 };
 

@@ -23,24 +23,29 @@ export default function Chart() {
   const [averageData, setAverageData] = useState<IAverageData>(
     {} as IAverageData
   );
+  const [isAuth, setIsAuth] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchAverageData(setIsLoading, setAverageData);
+    fetchAverageData(setIsLoading, setAverageData, setIsAuth, () =>
+      router.push("/unauthorized")
+    );
   }, []);
 
   return (
-    <div className="flex flex-col items-center py-4 h-screen">
-      <Header
-        page="charts"
-        onClickOverview={() => {
-          router.push("/overview");
-        }}
-      />
-      <div className="h-[500px] w-[80%]">
-        {isLoading && <Loading />}
-        {!isLoading && <BarChart data={averageData} />}
+    isAuth && (
+      <div className="flex flex-col items-center py-4 h-screen">
+        <Header
+          page="charts"
+          onClickOverview={() => {
+            router.push("/overview");
+          }}
+        />
+        <div className="h-[500px] w-[80%]">
+          {isLoading && <Loading />}
+          {!isLoading && <BarChart data={averageData} />}
+        </div>
+        <SignOutButton logoutHandler={logoutHandler} />
       </div>
-      <SignOutButton logoutHandler={logoutHandler} />
-    </div>
+    )
   );
 }

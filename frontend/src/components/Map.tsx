@@ -1,13 +1,13 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import React from "react";
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import React from 'react';
 
 const libraries: (
-  | "places"
-  | "drawing"
-  | "geometry"
-  | "localContext"
-  | "visualization"
-)[] = ["places"];
+  | 'places'
+  | 'drawing'
+  | 'geometry'
+  | 'localContext'
+  | 'visualization'
+)[] = ['places'];
 
 type MapProps = {
   lat: number;
@@ -22,7 +22,7 @@ const Map: React.FC<MapProps> = ({ lat, lng, containerStyle }) => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
+    id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLEMAPSAPIKEY as string,
   });
 

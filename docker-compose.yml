@@ -8,8 +8,8 @@ services:
     image: mainekwok97/go-api
     ports:
       - "8081:8081"
-    env_file:
-      - "./backend/.env"
+    # env_file:
+    #   - "./backend/.env"
     volumes:
       - "./backend/data:/app/data"
 
@@ -20,5 +20,5 @@ services:
     image: mainekwok97/seattle-frontend
     ports:
       - "3000:3000"
-    env_file:
-      - "./frontend/.env.local"
+    # env_file:
+    #   - "./frontend/.env.production"
