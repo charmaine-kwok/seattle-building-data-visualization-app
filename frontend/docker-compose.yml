@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  seattle-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mainekwok97/seattle-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production

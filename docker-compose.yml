@@ -1,0 +1,24 @@
+version: "3.9"
+name: seattle-app
+services:
+  go-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: mainekwok97/example
+    ports:
+      - "8081:8081"
+    env_file:
+      - "./backend/.env"
+    volumes:
+      - "./backend/data:/app/data"
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   image: test
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - "./frontend/.env.local"
