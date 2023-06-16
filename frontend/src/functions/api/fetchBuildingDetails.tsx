@@ -1,5 +1,5 @@
-import React from "react";
-import { BuildingDetailsResponse, BuildingsProps } from "@/pages/overview";
+import React from 'react';
+import { BuildingDetailsResponse, BuildingsProps } from '@/pages/overview';
 
 const fetchBuildingDetails = async (
   name: string,
@@ -12,7 +12,7 @@ const fetchBuildingDetails = async (
     const response = await fetch(
       `http://localhost:8081/api/buildings/details?name=${name}`,
       {
-        credentials: "include",
+        credentials: 'include',
       }
     );
 
@@ -27,7 +27,7 @@ const fetchBuildingDetails = async (
     setBuildingDetails(data.Building);
   } catch (error) {
     console.error(error);
-    window.alert("Failed to fetch building details. Please login again.");
+    // window.alert("Failed to fetch building details. Please login again.");
   }
 };
 
