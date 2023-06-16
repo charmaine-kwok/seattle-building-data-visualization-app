@@ -59,8 +59,6 @@ type BarProps = {
   data: any;
 };
 
-const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-
 const BarChart: React.FC<BarProps> = ({ data }) => {
   const labels = Object.keys(data);
   const backgroundColors = labels.map(
