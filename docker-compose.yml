@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: mainekwok97/example
+    image: mainekwok97/go-api
     ports:
       - "8081:8081"
     env_file:
@@ -13,12 +13,12 @@ services:
     volumes:
       - "./backend/data:/app/data"
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   image: test
-  #   ports:
-  #     - "3000:3000"
-  #   env_file:
-  #     - "./frontend/.env.local"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: mainekwok97/seattle-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - "./frontend/.env.local"
