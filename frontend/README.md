@@ -5,11 +5,21 @@
 First, run the development server:
 
 ```bash
+# local development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+
+```sh
+# docker
+
+# pull from Docker Hub
+docker pull mainekwok97/seattle-frontend
+
+# use mount
+docker run --rm -p 3000:3000 mainekwok97/seattle-frontend
+
+# use docker-compose
+docker-compose up
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -25,12 +35,3 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `Overview` page allows user to browse list of `buildings` data fetched from API and support any forms of paging
 
 - `Chart` page displays a bar chart showing the `average_eui` by `PrimaryPropertyType`
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
