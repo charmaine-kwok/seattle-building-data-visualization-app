@@ -55,6 +55,15 @@ export default function Overview() {
     );
   }, [currentPage]);
 
+  // fetch sample building details in the beginning
+  useEffect(() => {
+    fetchBuildingDetails(
+      'Mayflower park hotel',
+      setIsLoadingDetails,
+      setBuildingDetails as React.Dispatch<React.SetStateAction<BuildingsProps>>
+    );
+  }, []);
+
   const handleBuildingClick = (index: number) => {
     setSelectedBuildingIndex(index);
   };
